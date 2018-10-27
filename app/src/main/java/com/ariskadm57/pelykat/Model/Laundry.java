@@ -10,7 +10,7 @@ public class Laundry implements Parcelable {
     private String uNamaPemilik;
     private String uAlamat;
     private String uTelepon;
-    private String uStatus;
+    private boolean uStatus;
     private double uLatitude;
     private double uLongitude;
     private double uJarak;
@@ -19,8 +19,8 @@ public class Laundry implements Parcelable {
     public Laundry() {
     }
 
-    public Laundry(String uIDLaundry, String uNamaLaundry, String uNamaPemilik, String uAlamat, String uTelepon, String uStatus, double uLatitude, double uLongitude, double uJarak, double uRate) {
-        this.uLaundryID = uIDLaundry;
+    public Laundry(String uLaundryID, String uNamaLaundry, String uNamaPemilik, String uAlamat, String uTelepon, Boolean uStatus, double uLatitude, double uLongitude, double uJarak, double uRate) {
+        this.uLaundryID = uLaundryID;
         this.uNamaLaundry = uNamaLaundry;
         this.uNamaPemilik = uNamaPemilik;
         this.uAlamat = uAlamat;
@@ -72,11 +72,11 @@ public class Laundry implements Parcelable {
         this.uTelepon = uTelepon;
     }
 
-    public String getuStatus() {
+    public Boolean getuStatus() {
         return uStatus;
     }
 
-    public void setuStatus(String uStatus) {
+    public void setuStatus(Boolean uStatus) {
         this.uStatus = uStatus;
     }
 
@@ -125,7 +125,7 @@ public class Laundry implements Parcelable {
         dest.writeString(this.uNamaPemilik);
         dest.writeString(this.uAlamat);
         dest.writeString(this.uTelepon);
-        dest.writeString(this.uStatus);
+        dest.writeValue(this.uStatus);
         dest.writeDouble(this.uLatitude);
         dest.writeDouble(this.uLongitude);
         dest.writeDouble(this.uJarak);
@@ -138,14 +138,14 @@ public class Laundry implements Parcelable {
         this.uNamaPemilik = in.readString();
         this.uAlamat = in.readString();
         this.uTelepon = in.readString();
-        this.uStatus = in.readString();
+        this.uStatus = (Boolean) in.readValue(Boolean.class.getClassLoader());
         this.uLatitude = in.readDouble();
         this.uLongitude = in.readDouble();
         this.uJarak = in.readDouble();
         this.uRate = in.readDouble();
     }
 
-    public static final Parcelable.Creator<Laundry> CREATOR = new Parcelable.Creator<Laundry>() {
+    public static final Creator<Laundry> CREATOR = new Creator<Laundry>() {
         @Override
         public Laundry createFromParcel(Parcel source) {
             return new Laundry(source);

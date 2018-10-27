@@ -8,7 +8,7 @@ public class Order implements Parcelable {
     private String uOrderID;
     private String uLaundryID;
     private String uStatus;
-    private String note;
+    private String uNote;
     private int uJumlahPakaian;
     private double uBerat;
     private double uHarga;
@@ -16,12 +16,12 @@ public class Order implements Parcelable {
     public Order() {
     }
 
-    public Order(String uCustomerID, String uOrderID, String uLaundryID, String uStatus, String note, int uJumlahPakaian, double uBerat, double uHarga) {
+    public Order(String uCustomerID, String uOrderID, String uLaundryID, String uStatus, String uNote, int uJumlahPakaian, double uBerat, double uHarga) {
         this.uCustomerID = uCustomerID;
         this.uOrderID = uOrderID;
         this.uLaundryID = uLaundryID;
         this.uStatus = uStatus;
-        this.note = note;
+        this.uNote = uNote;
         this.uJumlahPakaian = uJumlahPakaian;
         this.uBerat = uBerat;
         this.uHarga = uHarga;
@@ -59,12 +59,12 @@ public class Order implements Parcelable {
         this.uStatus = uStatus;
     }
 
-    public String getNote() {
-        return note;
+    public String getuNote() {
+        return uNote;
     }
 
-    public void setNote(String note) {
-        this.note = note;
+    public void setuNote(String uNote) {
+        this.uNote = uNote;
     }
 
     public int getuJumlahPakaian() {
@@ -103,7 +103,7 @@ public class Order implements Parcelable {
         dest.writeString(this.uOrderID);
         dest.writeString(this.uLaundryID);
         dest.writeString(this.uStatus);
-        dest.writeString(this.note);
+        dest.writeString(this.uNote);
         dest.writeInt(this.uJumlahPakaian);
         dest.writeDouble(this.uBerat);
         dest.writeDouble(this.uHarga);
@@ -114,13 +114,13 @@ public class Order implements Parcelable {
         this.uOrderID = in.readString();
         this.uLaundryID = in.readString();
         this.uStatus = in.readString();
-        this.note = in.readString();
+        this.uNote = in.readString();
         this.uJumlahPakaian = in.readInt();
         this.uBerat = in.readDouble();
         this.uHarga = in.readDouble();
     }
 
-    public static final Parcelable.Creator<Order> CREATOR = new Parcelable.Creator<Order>() {
+    public static final Creator<Order> CREATOR = new Creator<Order>() {
         @Override
         public Order createFromParcel(Parcel source) {
             return new Order(source);
