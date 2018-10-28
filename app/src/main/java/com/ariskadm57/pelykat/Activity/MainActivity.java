@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +29,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        LaundryFragment.OnFragmentInteractionListener
+{
 
     private static final String TAG = "MainActivity";
     static boolean is_database_called = false; // flag for firebase Status
@@ -65,6 +68,10 @@ public class MainActivity extends AppCompatActivity {
             getCache();
         }
 
+//        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//        fragmentTransaction.replace(R.id.container, LaundryFragment.newInstance());
+//        fragmentTransaction.commit();
+
         HomeFragment homeFragment = new HomeFragment();
         FragmentTransaction ftHome = getSupportFragmentManager().beginTransaction();
         ftHome.replace(R.id.container, homeFragment);
@@ -74,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                Fragment fragment = null;
                 switch (menuItem.getItemId()){
 
                     case R.id.navigation_home:
@@ -84,10 +92,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.navigation_list:
-                        LaundryFragment laundryFragment = new LaundryFragment();
-                        FragmentTransaction ftLaundry = getSupportFragmentManager().beginTransaction();
-                        ftLaundry.replace(R.id.container, laundryFragment);
-                        ftLaundry.commit();
+                        fragment = LaundryFragment.newInstance();
                         break;
 
                     case R.id.navigation_maps:
@@ -96,6 +101,12 @@ public class MainActivity extends AppCompatActivity {
                         ftMaps.replace(R.id.container, mapsFragment);
                         ftMaps.commit();
                         break;
+                }
+
+                if (fragment != null){
+                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.container, fragment);
+                    fragmentTransaction.commit();
                 }
 
                 return true;
@@ -108,6 +119,10 @@ public class MainActivity extends AppCompatActivity {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnected();
+    }
+
+    public ArrayList<Laundry> getDataLaundryList() {
+        return list_laundry;
     }
 
     public void getListLaundry() {
