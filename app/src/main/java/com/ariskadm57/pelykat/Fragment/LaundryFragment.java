@@ -1,6 +1,7 @@
 package com.ariskadm57.pelykat.Fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -10,10 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ariskadm57.pelykat.Activity.DetailLaundryActivity;
 import com.ariskadm57.pelykat.Activity.MainActivity;
 import com.ariskadm57.pelykat.Adapter.LaundryAdapter;
 import com.ariskadm57.pelykat.Model.Laundry;
 import com.ariskadm57.pelykat.R;
+import com.ariskadm57.pelykat.Util.ItemClickList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,14 +50,23 @@ public class LaundryFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        list_laundry = ((MainActivity)getActivity()).getDataLaundryList();
-        laundryAdapter = new LaundryAdapter(getActivity(), list_laundry );
+        list_laundry = ((MainActivity) getActivity()).getDataLaundryList();
+        laundryAdapter = new LaundryAdapter(getActivity(), list_laundry);
         laundryAdapter.notifyDataSetChanged();
         recyclerView.setAdapter(laundryAdapter);
 
 
-//        recyclerView.addOnItemTouchListener();
-
+        recyclerView.addOnItemTouchListener(new ItemClickList(getContext(),
+            new ItemClickList.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    Laundry laundry = list_laundry.get(position);
+                    Intent intent = new Intent(getActivity(), DetailLaundryActivity.class);
+                    intent.putExtra("LAUNDRY", laundry);
+                    startActivity(intent);
+                }
+            })
+        );
         return view;
 
     }
