@@ -19,7 +19,7 @@ public class Laundry implements Parcelable {
     public Laundry() {
     }
 
-    public Laundry(String uLaundryID, String uNamaLaundry, String uNamaPemilik, String uAlamat, String uTelepon, Boolean uStatus, double uLatitude, double uLongitude, double uJarak, double uRate) {
+    public Laundry(String uLaundryID, String uNamaLaundry, String uNamaPemilik, String uAlamat, String uTelepon, boolean uStatus, double uLatitude, double uLongitude, double uJarak, double uRate) {
         this.uLaundryID = uLaundryID;
         this.uNamaLaundry = uNamaLaundry;
         this.uNamaPemilik = uNamaPemilik;
@@ -72,11 +72,11 @@ public class Laundry implements Parcelable {
         this.uTelepon = uTelepon;
     }
 
-    public Boolean getuStatus() {
+    public boolean isuStatus() {
         return uStatus;
     }
 
-    public void setuStatus(Boolean uStatus) {
+    public void setuStatus(boolean uStatus) {
         this.uStatus = uStatus;
     }
 
@@ -125,7 +125,7 @@ public class Laundry implements Parcelable {
         dest.writeString(this.uNamaPemilik);
         dest.writeString(this.uAlamat);
         dest.writeString(this.uTelepon);
-        dest.writeValue(this.uStatus);
+        dest.writeByte(this.uStatus ? (byte) 1 : (byte) 0);
         dest.writeDouble(this.uLatitude);
         dest.writeDouble(this.uLongitude);
         dest.writeDouble(this.uJarak);
@@ -138,7 +138,7 @@ public class Laundry implements Parcelable {
         this.uNamaPemilik = in.readString();
         this.uAlamat = in.readString();
         this.uTelepon = in.readString();
-        this.uStatus = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.uStatus = in.readByte() != 0;
         this.uLatitude = in.readDouble();
         this.uLongitude = in.readDouble();
         this.uJarak = in.readDouble();

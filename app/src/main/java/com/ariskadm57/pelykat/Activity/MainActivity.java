@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements
         db_order_reference = FirebaseDatabase.getInstance().getReference("Order");
         db_order_reference.keepSynced(true);
 
+
         if(isNetworkAvailable(getApplicationContext())) {
             getListLaundry();
         }else {
@@ -68,9 +69,6 @@ public class MainActivity extends AppCompatActivity implements
             getCache();
         }
 
-//        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//        fragmentTransaction.replace(R.id.container, LaundryFragment.newInstance());
-//        fragmentTransaction.commit();
 
         HomeFragment homeFragment = new HomeFragment();
         FragmentTransaction ftHome = getSupportFragmentManager().beginTransaction();

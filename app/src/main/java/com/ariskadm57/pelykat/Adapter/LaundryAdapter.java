@@ -13,6 +13,9 @@ import android.widget.TextView;
 
 import com.ariskadm57.pelykat.Model.Laundry;
 import com.ariskadm57.pelykat.R;
+import com.ariskadm57.pelykat.Util.GlideApp;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -29,7 +32,7 @@ public class LaundryAdapter extends RecyclerView.Adapter<LaundryAdapter.ViewHold
     @NonNull
     @Override
     public LaundryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View row = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_laundry,viewGroup,false);
+        View row = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_laundry, viewGroup, false);
         return new ViewHolder(row);
     }
 
@@ -40,7 +43,11 @@ public class LaundryAdapter extends RecyclerView.Adapter<LaundryAdapter.ViewHold
         viewHolder.rating.setRating((float) list_laundry.getuRate());
         viewHolder.alamat.setText(list_laundry.getuAlamat());
         viewHolder.jarak.setText("Jarak " + (int) list_laundry.getuJarak());
-//        Glide.with(context).load(list_laundry.get().get(0)).centerCrop().into(holder.photo);
+        StorageReference fotoRef = FirebaseStorage.getInstance().getReference("FotoLaundry").child(list_laundry.getuLaundryID());
+
+        GlideApp.with(context)
+                .load(fotoRef)
+                .into(viewHolder.foto);
     }
 
 
@@ -53,33 +60,34 @@ public class LaundryAdapter extends RecyclerView.Adapter<LaundryAdapter.ViewHold
         TextView nama, alamat, jarak;
         ImageView foto;
         RatingBar rating;
+
         public ViewHolder(View itemView) {
             super(itemView);
             nama = itemView.findViewById(R.id.list_laundry_nama);
-            alamat  = itemView.findViewById(R.id.list_laundry_alamat);
+            alamat = itemView.findViewById(R.id.list_laundry_alamat);
             rating = itemView.findViewById(R.id.list_laundry_rating);
-            jarak   = itemView.findViewById(R.id.list_laundry_jarak);
+            jarak = itemView.findViewById(R.id.list_laundry_jarak);
             foto = itemView.findViewById(R.id.list_laundry_foto);
         }
     }
 
-    public Laundry removeItem(int position){
+    public Laundry removeItem(int position) {
         final Laundry Laundry = list_laundry.remove(position);
         notifyItemRemoved(position);
         return Laundry;
     }
 
-    public void addItem(int position, Laundry laundry){
+    public void addItem(int position, Laundry laundry) {
         list_laundry.add(position, laundry);
     }
 
-    public void moveItem(int fromPosition, int toPosition){
+    public void moveItem(int fromPosition, int toPosition) {
         final Laundry Laundry = list_laundry.remove(fromPosition);
         list_laundry.add(toPosition, Laundry);
         notifyItemMoved(fromPosition, toPosition);
     }
 
-    public void animateTo(List<Laundry> Laundry){
+    public void animateTo(List<Laundry> Laundry) {
         applyAndAnimateRemovals(Laundry);
         applyAndAnimateAdditions(Laundry);
         applyAndAnimateMovedItems(Laundry);
